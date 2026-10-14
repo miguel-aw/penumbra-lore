@@ -1,0 +1,416 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="A lore de Penumbra, mod de terror para Minecraft: os cinco amigos, os lugares e os capítulos.">
+<title>Os Cinco de Penumbra</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Special+Elite&family=Literata:ital,opsz,wght@0,7..72,400;0,7..72,600;1,7..72,400&family=VT323&display=swap">
+<style>
+/* Layout: one tape playing on an old TV — a framed screen at the top, then the case notes laid out like a found dossier. Single dark look on purpose. */
+:root {
+  color-scheme: dark;
+  --void: #0b0a0d;        /* the room around the TV */
+  --screen: #12110f;      /* the tube */
+  --paper: #1a1814;       /* aged page, in the dark */
+  --ink: #d9d2c3;         /* faded ink */
+  --dim: #8f8778;         /* pencil */
+  --rec: #d6362f;         /* the REC light */
+  --ember: #c96a2b;       /* Nether light */
+  --void-purple: #8a5cc4; /* End eyes */
+  --line: #2b2822;
+  --display: "Special Elite", "Courier New", monospace;
+  --body: "Literata", Georgia, "Times New Roman", serif;
+  --osd: "VT323", "Courier New", monospace;
+}
+* { box-sizing: border-box; }
+html { background: var(--void); }
+body {
+  background: var(--void);
+  color: var(--ink);
+  font-family: var(--body);
+  font-size: 1.05rem;
+  line-height: 1.7;
+  padding-inline: 16px;
+  padding-block: 0 64px;
+}
+.wrap { max-width: 1040px; margin-inline: auto; }
+a { color: var(--ink); }
+:focus-visible { outline: 2px solid var(--rec); outline-offset: 3px; }
+
+/* ---------- the TV ---------- */
+.tv {
+  margin-block: 28px 56px;
+  position: relative;
+  border-radius: 28px;
+  padding: clamp(14px, 3vw, 28px);
+  background: linear-gradient(160deg, #1c1a17, #0f0e0c);
+  box-shadow: inset 0 0 0 1px #2a2723, 0 30px 80px #000;
+}
+.screen {
+  position: relative;
+  overflow: hidden;
+  border-radius: 22px / 26px;
+  background:
+    radial-gradient(ellipse at 50% 45%, #1d1b18 0%, var(--screen) 55%, #050505 100%);
+  padding: clamp(28px, 6vw, 72px) clamp(20px, 5vw, 64px);
+  min-height: 0;
+}
+.screen::before { /* scanlines */
+  content: ""; position: absolute; inset: 0; pointer-events: none;
+  background: repeating-linear-gradient(to bottom, rgba(255,255,255,.035) 0 1px, transparent 1px 3px);
+  mix-blend-mode: screen;
+}
+.screen::after { /* tube vignette */
+  content: ""; position: absolute; inset: 0; pointer-events: none;
+  box-shadow: inset 0 0 120px 30px rgba(0,0,0,.85);
+  border-radius: inherit;
+}
+.osd {
+  position: absolute; top: 18px; left: 22px; right: 22px;
+  display: flex; justify-content: space-between; gap: 12px;
+  font-family: var(--osd); font-size: 1.5rem; letter-spacing: .06em; color: #e8e4dc;
+  z-index: 2;
+}
+.rec { display: inline-flex; align-items: center; gap: 8px; }
+.rec i { width: 12px; height: 12px; border-radius: 50%; background: var(--rec); box-shadow: 0 0 10px var(--rec); animation: blink 1.4s steps(1) infinite; }
+@keyframes blink { 50% { opacity: 0; } }
+.hero { position: relative; z-index: 1; padding-top: 34px; }
+.hero h1 {
+  font-family: var(--display); font-weight: 400;
+  font-size: clamp(3rem, 11vw, 7.5rem); line-height: .95; letter-spacing: .04em;
+  margin: 0 0 8px; color: #ece6d8;
+  text-shadow: -2px 0 rgba(214,54,47,.55), 2px 0 rgba(70,160,200,.35);
+  text-wrap: balance;
+}
+.hero .sub { font-family: var(--osd); font-size: 1.5rem; color: var(--dim); letter-spacing: .08em; margin: 0 0 28px; }
+.hero p.lead { font-size: clamp(1.1rem, 2.4vw, 1.35rem); max-width: 34em; margin: 0 0 12px; }
+.hero p.small { color: var(--dim); max-width: 38em; margin: 0; }
+@media (prefers-reduced-motion: no-preference) {
+  .hero h1 { animation: roll 7s infinite; }
+  @keyframes roll { 0%, 93%, 100% { transform: none; } 94% { transform: translateX(-3px) skewX(-4deg); } 96% { transform: translateX(2px); } }
+}
+@media (prefers-reduced-motion: reduce) { .rec i { animation: none; } }
+
+/* ---------- sections ---------- */
+section { margin-block: 64px; }
+.label { font-family: var(--osd); font-size: 1.35rem; color: var(--rec); letter-spacing: .12em; text-transform: uppercase; margin: 0 0 6px; }
+h2 { font-family: var(--display); font-weight: 400; font-size: clamp(1.8rem, 4.5vw, 2.6rem); line-height: 1.15; margin: 0 0 18px; text-wrap: balance; }
+h3 { font-family: var(--display); font-weight: 400; font-size: 1.45rem; margin: 0 0 6px; }
+p { margin: 0 0 14px; max-width: 65ch; }
+
+/* the five: case files */
+.five { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr)); gap: 18px; }
+.file {
+  min-width: 0;
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  padding: 22px 22px 18px;
+  position: relative;
+}
+.file .tag { font-family: var(--osd); font-size: 1.2rem; color: var(--dim); letter-spacing: .08em; }
+.file p { font-size: .98rem; }
+.file .now { border-top: 1px dashed var(--line); padding-top: 10px; margin-top: 12px; color: var(--dim); font-style: italic; font-size: .95rem; }
+.file.tom { box-shadow: inset 3px 0 0 #6f8fa6; }
+.file.gui { box-shadow: inset 3px 0 0 #8c8a7a; }
+.file.kev { box-shadow: inset 3px 0 0 var(--ember); }
+.file.dean { box-shadow: inset 3px 0 0 #9a3b22; }
+.file.kailan { box-shadow: inset 3px 0 0 var(--void-purple); }
+
+/* places: a strip of tapes */
+.tapes { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr)); gap: 14px; }
+.tape { min-width: 0; border: 1px solid var(--line); border-radius: 4px; padding: 16px 18px; background: linear-gradient(180deg, #15130f, #100f0c); }
+.tape .where { font-family: var(--osd); font-size: 1.25rem; color: var(--ink); letter-spacing: .05em; }
+.tape .dim { color: var(--dim); font-size: .95rem; margin: 6px 0 0; }
+
+/* chapters */
+.chapters { display: grid; gap: 14px; }
+.chapter { display: grid; grid-template-columns: 7.5rem 1fr; gap: 18px; align-items: baseline; border-top: 1px solid var(--line); padding-top: 16px; }
+.chapter .num { font-family: var(--osd); font-size: 1.6rem; color: var(--dim); }
+.chapter > div { min-width: 0; }
+@media (max-width: 560px) { .chapter { grid-template-columns: 1fr; gap: 4px; } }
+
+/* modes */
+.modes { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr)); gap: 18px; }
+.mode { min-width: 0; border: 1px solid var(--line); border-radius: 4px; padding: 22px; background: var(--paper); }
+.mode.terror { border-color: #4a1f1c; }
+.mode ul { margin: 8px 0 0; padding-left: 1.1em; color: var(--ink); }
+.mode li { margin-bottom: 4px; }
+
+/* quote from a book */
+.note {
+  font-family: var(--display); font-size: clamp(1.25rem, 3vw, 1.6rem); line-height: 1.45;
+  border-left: 2px solid var(--rec); padding: 4px 0 4px 18px; margin: 28px 0; max-width: 32em; color: #e3dccd;
+}
+.note cite { display: block; font-family: var(--osd); font-style: normal; font-size: 1.15rem; color: var(--dim); margin-top: 8px; letter-spacing: .06em; }
+
+/* the sealed tape */
+.sealed { border: 1px dashed #5a2522; border-radius: 6px; padding: clamp(20px, 4vw, 36px); background: #100c0b; }
+.sealed .warn { font-family: var(--osd); font-size: 1.4rem; color: var(--rec); letter-spacing: .08em; }
+.btns { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 16px; }
+button {
+  font-family: var(--osd); font-size: 1.35rem; letter-spacing: .08em;
+  background: transparent; color: var(--ink); border: 1px solid #5a2522; border-radius: 3px;
+  padding: 8px 16px; cursor: pointer;
+}
+button:hover { background: #2a1210; }
+.spoiler { margin-top: 28px; }
+.spoiler h3 { margin-top: 30px; }
+.spoiler h3:first-child { margin-top: 0; }
+.ending { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr)); gap: 16px; margin-top: 12px; }
+.ending > div { min-width: 0; border: 1px solid var(--line); border-radius: 4px; padding: 18px; background: var(--paper); }
+
+footer { border-top: 1px solid var(--line); padding-top: 18px; color: var(--dim); font-size: .92rem; }
+
+/* ---------- motion ---------- */
+.grain { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; opacity: .09; mix-blend-mode: screen; z-index: 1; }
+.tracking {
+  position: absolute; left: 0; right: 0; height: 14%; top: -20%; pointer-events: none; z-index: 1;
+  background: linear-gradient(to bottom, transparent, rgba(255,255,255,.07) 40%, rgba(255,255,255,.14) 50%, rgba(255,255,255,.05) 60%, transparent);
+  filter: blur(1px);
+}
+.file { transition: transform .25s ease, border-color .25s ease; }
+.file:hover { border-color: #3a362e; transform: translateY(-2px); }
+.file:hover h3 { animation: jitter .32s steps(2) 2; }
+@keyframes jitter { 0% { transform: translate(0,0); text-shadow: none; } 50% { transform: translate(-1px,1px); text-shadow: -2px 0 rgba(214,54,47,.6), 2px 0 rgba(70,160,200,.4); } 100% { transform: translate(1px,0); } }
+.static-flash {
+  position: fixed; inset: 0; z-index: 50; pointer-events: none;
+  background: repeating-linear-gradient(to bottom, rgba(255,255,255,.18) 0 2px, rgba(0,0,0,.6) 2px 4px);
+  opacity: 0;
+}
+.static-flash.on { animation: rewind .7s steps(7) 1; }
+@keyframes rewind { 0% { opacity: .9; background-position: 0 0; } 50% { opacity: .7; background-position: 0 -60px; } 100% { opacity: 0; background-position: 0 -140px; } }
+.eyes { position: fixed; z-index: 40; pointer-events: none; display: flex; gap: 10px; opacity: 0; transition: opacity 1.2s ease; }
+.eyes i { width: 7px; height: 4px; border-radius: 2px; background: #c9a6ff; box-shadow: 0 0 10px 3px rgba(138,92,196,.8); }
+.eyes.on { opacity: .85; }
+.tape { transition: border-color .3s ease; }
+.tape:hover { border-color: #3a362e; }
+.tape:hover .where::after { content: " ▮"; color: var(--rec); animation: blink 1s steps(1) infinite; }
+@media (prefers-reduced-motion: no-preference) {
+  .tracking { animation: track 9s linear infinite; }
+  @keyframes track { 0%, 70% { top: -20%; } 100% { top: 110%; } }
+  .file .now { animation: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .tracking, .grain, .eyes { display: none; }
+  .file:hover h3 { animation: none; }
+  .static-flash.on { animation: none; }
+}
+footer .osd-line { font-family: var(--osd); font-size: 1.2rem; letter-spacing: .06em; }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+
+  <div class="tv" aria-label="Fita gravando numa TV antiga">
+    <div class="screen">
+      <canvas class="grain" id="grain" aria-hidden="true"></canvas>
+      <div class="tracking" aria-hidden="true"></div>
+      <div class="osd" aria-hidden="true"><span class="rec"><i></i>REC</span><span>PLAY ▶</span></div>
+      <div class="hero">
+        <h1>PENUMBRA</h1>
+        <p class="sub">MOD DE TERROR · MINECRAFT 1.21.1 · FABRIC</p>
+        <p class="lead">Eram cinco amigos. Gente que saía de casa com uma picareta e voltava com histórias.</p>
+        <p class="small">Você chega muito tempo depois. As casas têm musgo, os baús estão meio vazios e a tinta dos livros desbotou. Só sobraram as coisas que eles deixaram, e eles mesmos.</p>
+      </div>
+    </div>
+  </div>
+
+  <section aria-labelledby="cinco">
+    <p class="label">Os arquivos</p>
+    <h2 id="cinco">Quem eles eram</h2>
+    <div class="five">
+      <article class="file tom">
+        <span class="tag">ARQUIVO 01</span>
+        <h3>Tom</h3>
+        <p>O das pegadinhas. Fazia geringonça com tudo: anzol, pistão, gancho, linha de pesca. Ria antes da piada terminar. Morava numa casa de abeto na beira da água, porque linha de pesca era o material preferido dele.</p>
+        <p class="now">Hoje: algo comprido demais no canto do seu olho. Perto do teto.</p>
+      </article>
+      <article class="file gui">
+        <span class="tag">ARQUIVO 02</span>
+        <h3>Guilberte</h3>
+        <p>O Gui. Melhor amigo do Tom. Tímido, desenhava mapas de caverna à mão e caía em todas as pegadinhas, às vezes de propósito, só para ver o Tom rir. Morava numa casa de pedra construída em cima de uma caverna.</p>
+        <p class="now">Hoje: ele não gosta de quem acende luz no escuro.</p>
+      </article>
+      <article class="file kev">
+        <span class="tag">ARQUIVO 03</span>
+        <h3>Kev</h3>
+        <p>O irmão mais novo. O que testava, quebrava e ria. Quando eram pequenos, ele e o Dean juraram que nunca iam se separar.</p>
+        <p class="now">Hoje: alguém pequeno se escondendo no Nether. Ele não aguenta mais ficar sozinho.</p>
+      </article>
+      <article class="file dean">
+        <span class="tag">ARQUIVO 04</span>
+        <h3>Dean</h3>
+        <p>O irmão mais velho. O que construía. Tinha mania de esconder as coisas boas atrás de tijolo falso, e levou a promessa a sério até o fim.</p>
+        <p class="now">Hoje: um suspiro nas frestas da fortaleza. Dito de trás para frente.</p>
+      </article>
+      <article class="file kailan">
+        <span class="tag">ARQUIVO 05</span>
+        <h3>Kailan</h3>
+        <p>O quinto. O mais quieto. Colecionava quadros e lendas do dragão do End e dormia com um mapa de estrelas embaixo do travesseiro. Foi o primeiro a se afastar, e ninguém soube para onde.</p>
+        <p class="now">Hoje: dois pontos roxos, longe. Olhando de volta.</p>
+      </article>
+    </div>
+
+    <blockquote class="note">"Volta. O Kev pergunta de você."<cite>CARTA NUNCA ENVIADA · ACHADA NO NETHER</cite></blockquote>
+  </section>
+
+  <section aria-labelledby="lugares">
+    <p class="label">As fitas</p>
+    <h2 id="lugares">Onde procurar</h2>
+    <div class="tapes">
+      <div class="tape"><div class="where">A CASA DO TOM</div><p class="dim">Abeto, pier, duas varas de pesca. Placa torta na porta: "Cuidado: pegadinhas". Não desça ao porão sem olhar para cima.</p></div>
+      <div class="tape"><div class="where">A CASA DO GUI</div><p class="dim">Pedra meio afundada no chão, mapas desenhados na parede, duas camas. A escada do porão termina no escuro.</p></div>
+      <div class="tape"><div class="where">AS FORTALEZAS</div><p class="dim">No Nether, algumas fortalezas têm quartos que não deviam existir, atrás de tijolo falso.</p></div>
+      <div class="tape"><div class="where">O OBSERVATÓRIO</div><p class="dim">Longe da ilha central do End, numa ilha solta, ligado por uma ponte que alguém consertou muitas vezes.</p></div>
+    </div>
+    <p style="margin-top:18px">Pelo caminho há livros envelhecidos, com marcas de lágrima, e 11 folhas soltas espalhadas pelas estruturas. Elas se juntam num caderninho.</p>
+  </section>
+
+  <section aria-labelledby="capitulos">
+    <p class="label">A história</p>
+    <h2 id="capitulos">Três capítulos</h2>
+    <div class="chapters">
+      <div class="chapter"><span class="num">CAP. 1</span><div><h3>O Vulto</h3><p>Overworld. Duas casas, um porão com linhas de pesca penduradas do teto e uma caverna embaixo de uma casa de pedra. Visite as duas casas e escute os ecos.</p></div></div>
+      <div class="chapter"><span class="num">CAP. 2</span><div><h3>Os Irmãos</h3><p>Nether. Um irmão se esconde, o outro procura. Três lembranças nos quartos escondidos, e alguém que te persegue de fresta em fresta.</p></div></div>
+      <div class="chapter"><span class="num">CAP. 3</span><div><h3>O Observador</h3><p>End. Um observatório, uma luneta virada para o dragão e uma escolha no final que ninguém deveria fazer com pressa.</p></div></div>
+    </div>
+  </section>
+
+  <section aria-labelledby="modos">
+    <p class="label">Como jogar</p>
+    <h2 id="modos">Dois modos, três dificuldades</h2>
+    <div class="modes">
+      <div class="mode">
+        <h3>História</h3>
+        <p>Capítulos, cenas e lembranças. Os cinco e o que aconteceu com eles. O medo tem motivo.</p>
+        <ul><li>Leve, Normal ou Pesadelo</li><li>Cutscenes, livros, folhas e o diário</li><li>Os finais dos cinco</li></ul>
+      </div>
+      <div class="mode terror">
+        <h3>Só Terror</h3>
+        <p>Sem história. Eles já estão aqui desde o começo e não vieram conversar.</p>
+        <ul><li>Um degrau acima na mesma dificuldade</li><li>Ninguém fala. Só respiram.</li><li>Pesadelos ao dormir, e coisas fora do lugar na sua base</li></ul>
+      </div>
+    </div>
+    <p style="margin-top:18px;color:var(--dim)">Funciona sozinho ou com amigos. Com amigos, eles costumam escolher quem ficou para trás.</p>
+  </section>
+
+  <section aria-labelledby="fita">
+    <p class="label">Fita lacrada</p>
+    <h2 id="fita">A história inteira</h2>
+    <div class="sealed">
+      <p class="warn">SÓ ABRA SE VOCÊ TERMINOU O CAPÍTULO 3.</p>
+      <p>Aqui está tudo: como cada um morreu, o que virou e os dois finais. Ler antes estraga as cenas.</p>
+      <div class="btns">
+        <button type="button" id="open-tape" aria-expanded="false" aria-controls="spoiler">Eu terminei. Rodar a fita.</button>
+      </div>
+
+      <div class="spoiler" id="spoiler" hidden>
+        <h3>Tom</h3>
+        <p>A última pegadinha do Tom era fingir que estava com os braços e as pernas arrancados. Ele prendeu linhas de pesca em cada membro, ligadas a um "puxador" que ele mesmo inventou, um pistão que esticava as linhas de leve. Apertou o botão sozinho para testar. O puxador não puxou de leve. O Gui chegou alguns minutos depois e encontrou o porão em silêncio.</p>
+        <p>Por isso o fantasma do Tom é comprido demais e aparece de relance: ele ainda está montando a pegadinha que não terminou. No começo ele não quer assustar ninguém. Ele quer achar o Gui.</p>
+
+        <h3>Guilberte</h3>
+        <p>Depois do Tom, o Gui parou de dormir. Escrevia cartas para ele e não mandava para lugar nenhum. Jurava ver um vulto comprido no canto do olho, e sabia que era o Tom. Uma noite desceu à caverna embaixo de casa com uma tocha. O vulto apareceu inteiro atrás dele. O Gui se virou rápido demais, escorregou e caiu sobre uma estalagmite. A tocha rolou e apagou.</p>
+        <p>Virou o rastejante: um buraco no peito e raiva de quem acende luz no escuro, porque foi a luz que mostrou o vulto naquela noite. No fim do Capítulo 1, os dois finalmente se encontram, se abraçam e viram luz.</p>
+
+        <h3>Kev e Dean</h3>
+        <p>O Overworld virou um lugar de enterro para os irmãos. Desceram para o Nether, fizeram casa numa fortaleza abandonada e riscaram no tijolo: "K + D. Nunca separados." O Dean montou uma máquina para dar ao Kev uma armadura que nunca quebrasse. Para a bigorna descer devagar, usou uma peça que trouxe do Overworld como homenagem: o puxador do Tom.</p>
+        <p>No último teste o Kev se abaixou embaixo da corrente para pegar um livro. O puxador fez o que tinha feito com o Tom. O Dean gritou "Kev, sai daí!" e não deu tempo.</p>
+        <p>O Dean ficou sozinho, falando com o irmão como se nada tivesse mudado. O fantasma do Tom ouviu o estalo da própria geringonça através do mundo e foi até ele, e não foi mais embora. O Dean aprendeu a se esconder nas frestas, onde o Tom não cabia. Os riscos na parede da sacada param. A última página diz que ele ia descer até a beira da lava, "o único lugar quente". Não há mais nada escrito. "Achei que lá embaixo eu ia te encontrar. Não encontrei."</p>
+        <p>Como fantasmas, o Kev se esconde achando que o irmão está bravo com ele, e o Dean procura há tanto tempo que esqueceu como enxergá-lo. As três lembranças, o Juramento, a Máquina e a Sacada, mostram ao Kev que o irmão tentou salvá-lo e nunca parou de procurar. No reencontro, o Dean vê o Kev por cima do seu ombro e, pela primeira vez, fala para frente.</p>
+
+        <h3>Kailan</h3>
+        <p>Quando criança, o Kailan viu dois pontos roxos no alto de um morro e achou que era o dragão olhando através do céu. Escreveu no mapa de estrelas: "Ele me olhou de volta." Era um Enderman.</p>
+        <p>Depois do Tom e do Gui, ele foi embora sem se despedir. No End viveu meses com uma abóbora na cabeça, no lugar mais bonito que já tinha visto, sem poder olhar direito para ele. Construiu uma ponte que o dragão quebrava e ele consertava no dia seguinte: "é assim que se ama uma coisa grande". No último dia tirou a abóbora para ver o dragão passar perto. O dragão olhou para ele. Ele se virou feliz para contar a alguém, e havia um Enderman a três passos. Depois outro, e outro.</p>
+        <p>O End atendeu o desejo dele de ficar ali para sempre, do jeito errado. Ele acordou comprido, de olhos roxos, servindo o dragão, porque todo mundo que entra no End entra para matá-lo.</p>
+
+        <h3>Os cinco</h3>
+        <p>Quando o dragão morre, o mundo congela e quatro luzes descem: Tom, Gui, Kev e Dean. "Éramos cinco." Nenhum deles tinha ido embora de verdade enquanto faltava um. O Dean e o Kailan resolvem as cartas: "Você nunca respondeu." / "Nenhuma chegou, Dean. Mas eu respondi todas." Os quatro chamam: "Vem com a gente." O Kailan olha para o ovo e não consegue responder. A escolha é sua.</p>
+        <div class="ending">
+          <div><h3>Dar o ovo</h3><p>Pela primeira vez o Kailan pode escolher. Ele deixa o ovo na sacada do observatório, com a luneta virada para ele, "pra quando ele acordar", e sobe com os amigos.</p></div>
+          <div><h3>Não dar o ovo</h3><p>Os quatro tentam pegar a mão dele e a luz passa através. Sobem sem ele. Os créditos voltam ao contrário até só sobrar um nome. "Você ficou com o que era dele."</p></div>
+        </div>
+        <div class="btns"><button type="button" id="close-tape">Rebobinar</button></div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <p class="osd-line">PENUMBRA · FABRIC 1.21.1</p>
+    <p>Um mod de terror para Minecraft. Público 14+: fala de morte e de luto, sem sangue e sem detalhes.</p>
+  </footer>
+</div>
+
+<div class="static-flash" id="flash" aria-hidden="true"></div>
+<div class="eyes" id="eyes" aria-hidden="true"><i></i><i></i></div>
+
+<script>
+(function () {
+  var calm = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var open = document.getElementById('open-tape');
+  var close = document.getElementById('close-tape');
+  var tape = document.getElementById('spoiler');
+  var flash = document.getElementById('flash');
+
+  function rewind(then) {
+    if (calm) { then(); return; }
+    flash.classList.remove('on');
+    void flash.offsetWidth;
+    flash.classList.add('on');
+    setTimeout(then, 420);
+  }
+  function set(on) {
+    rewind(function () {
+      tape.hidden = !on;
+      open.setAttribute('aria-expanded', on ? 'true' : 'false');
+      open.hidden = on;
+      if (on) tape.querySelector('h3').scrollIntoView({ behavior: calm ? 'auto' : 'smooth', block: 'start' });
+      else open.focus();
+    });
+  }
+  open.addEventListener('click', function () { set(true); });
+  close.addEventListener('click', function () { set(false); });
+
+  if (calm) return;
+
+  // the tube's grain: a small noise canvas, stretched, redrawn ~12 times a second
+  var c = document.getElementById('grain');
+  var g = c.getContext('2d');
+  c.width = 160; c.height = 90;
+  var img = g.createImageData(c.width, c.height);
+  var last = 0;
+  function noise(t) {
+    if (t - last > 80) {
+      last = t;
+      var d = img.data;
+      for (var i = 0; i < d.length; i += 4) {
+        var v = Math.random() * 255 | 0;
+        d[i] = d[i + 1] = d[i + 2] = v; d[i + 3] = 255;
+      }
+      g.putImageData(img, 0, 0);
+    }
+    requestAnimationFrame(noise);
+  }
+  requestAnimationFrame(noise);
+
+  // now and then, two violet points in the dark at the page's edge: looking back
+  var eyes = document.getElementById('eyes');
+  function watch() {
+    var w = window.innerWidth, h = window.innerHeight;
+    var side = Math.random() < 0.5;
+    eyes.style.left = (side ? 6 + Math.random() * 30 : w - 60 - Math.random() * 30) + 'px';
+    eyes.style.top = (h * (0.2 + Math.random() * 0.6)) + 'px';
+    eyes.classList.add('on');
+    setTimeout(function () { eyes.classList.remove('on'); }, 1600 + Math.random() * 1200);
+    setTimeout(watch, 14000 + Math.random() * 16000);
+  }
+  setTimeout(watch, 9000);
+})();
+</script>
+</body>
+</html>
